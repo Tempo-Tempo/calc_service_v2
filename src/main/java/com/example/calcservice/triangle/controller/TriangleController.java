@@ -15,7 +15,6 @@ public class TriangleController {
     @GetMapping
     public Map<String, Double> resultCalcTriangle()
     {
-        System.out.println("suka");
         return service.resultCalcTriangle();
     }
 
