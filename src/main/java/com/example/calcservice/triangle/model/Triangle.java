@@ -9,42 +9,58 @@ public class Triangle extends Figure {
     private final String keyMed = "med";
     private final String keyBess = "bess";
     private final String keyType = "type";
+    private final String getKeyInCircle = "inCircle";
+    private final String getKeyOutCircle = "outCircle";
 
     private String triangleType;
-    public Triangle(double a, double b, double c, double h) {
-        super(a, b, c, h);
+    public Triangle(double a, double b, double c) {
+        super(a, b, c);
     }
+
+    public Triangle() {};
 
     public Triangle(String triangleType) {
         this.triangleType = triangleType;
     };
-
+    @Override
     public double calcArea() {
-        double s = (getA() + getB() + getC()) / 2;
-        return Math.sqrt(s * (s -getA()) * (s - getB()) * (s - getC()));
+        double s = (a + b + c) / 2;
+        return Math.sqrt(s * (s - a) * (s - b) * (s - c));
     }
+    @Override
     public double calcPer() {
-        return getA() + getB() + getC();
+        return a + b + c;
     }
-    public double getTriangleMed() {
-        return Math.sqrt(2 * getA()
-                * getA() + 2 * getB()
-                * getB() - getC()
-                * getC()) * 0.5;
+    public double calcMed() {
+        return Math.sqrt(2 * a
+                * a + 2 * b
+                * b - c
+                * c) * 0.5;
     }
-    public double getTriangleBess() {
-            return Math.sqrt(getA() * getB() *
-                    (getA() + getB() + getC()) *
-                    (getA() + getB() - getC())) /
-                    (getA() + getB());
+    public double calcBess() {
+            return Math.sqrt(a * b *
+                    (a + b + c) *
+                    (a + b - c)) /
+                    (a + b);
     }
     public String getType() {
-        if (getA() == getB() && getB() == getC()) {
+        if (a == b && b == c) {
             return "Равносторонний";
-        } else if (getA() == getB() || getB() == getC() || getA() == getC()) {
+        } else if (a == b || b == c || a == c) {
             return "Равнобедренный";
         } else {
             return "Разносторонний";
         }
     }
+
+    public double inCircleArea() {
+       double r = calcArea() / (calcPer() / 2);
+       return pi * Math.pow(r, 2);
+    };
+    public double outCircleArea() {
+        double p = calcPer() / 2;
+        double s = Math.sqrt(p * (p - a) * (p - b) * (p - c));
+        double r = a * b * c / (4 * s);
+        return pi * Math.pow(r, 2);
+    };
 }
