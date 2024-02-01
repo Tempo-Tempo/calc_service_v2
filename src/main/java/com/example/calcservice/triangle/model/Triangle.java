@@ -45,9 +45,9 @@ public class Triangle extends Figure {
                     (a + b);
     }
     public String getType() {
-        if (c[0] == c[1] && c[1] == c[2]) {
+        if (a == b && b == c) {
             return "Равносторонний";
-        } else if (c[0] == c[1] || c[1] == c[2] || c[0] == c[2]) {
+        } else if (a == b || b == c || a == c) {
             return "Равнобедренный";
         } else {
             return "Разносторонний";
@@ -60,8 +60,8 @@ public class Triangle extends Figure {
     };
     public double outCircleArea() {
         double p = calcPer() / 2;
-        double s = Math.sqrt(p * (p - c[0]) * (p - c[1]) * (p - c[2]));
-        double r = c[0] * c[1] * c[2] / (4 * s);
+        double s = Math.sqrt(p * (p - a) * (p - b) * (p - c));
+        double r = a * b * c / (4 * s);
         return pi * Math.pow(r, 2);
     };
 }
