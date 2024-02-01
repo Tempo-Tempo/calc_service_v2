@@ -13,7 +13,7 @@ public class RecTriangle extends Triangle {
    }
     @Override
     public double calcArea() {
-        double[] array = new double[]{a, b, c};
+        double[] array = new double[]{c[0], c[1], c[2]};
         Arrays.sort(array);
         double legSum = array[0] * array[1];
         return legSum / 2;
