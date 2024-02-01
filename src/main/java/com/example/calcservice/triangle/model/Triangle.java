@@ -22,6 +22,10 @@ public class Triangle extends Figure {
     public Triangle(String triangleType) {
         this.triangleType = triangleType;
     };
+
+    public Triangle(double[] a) {
+    }
+
     @Override
     public double calcArea() {
 
