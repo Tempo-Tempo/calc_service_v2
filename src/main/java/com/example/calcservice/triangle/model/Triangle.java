@@ -4,32 +4,33 @@ import lombok.*;
 
 @Data
 @Builder
+@AllArgsConstructor
 public class Triangle extends Figure {
 
-    private final String keyMed = "med";
-    private final String keyBess = "bess";
-    private final String keyType = "type";
-    private final String getKeyInCircle = "inCircle";
-    private final String getKeyOutCircle = "outCircle";
+    private double area;
+    private double per;
+    private double med;
+    private double bess;
+    private double cos;
+    private double sin;
+    private double tang;
+    private double inCircle;
+    private double outCircle;
+    private String typeTriangle;
 
     private String triangleType;
-    public Triangle( double a, double b, double c) {
-        super(a, b, c);
-    }
 
     public Triangle() {};
-
-    public Triangle(String triangleType) {
-        this.triangleType = triangleType;
+    public Triangle(double a, double b, double c) {
+        this.a = a;
+        this.b = b;
+        this.c = c;
     };
-
-    public Triangle(double[] a) {
-    }
 
     @Override
     public double calcArea() {
-
         double s = (a + b + c) / 2;
+        this.area = Math.sqrt(s * (s - a) * (s - b) * (s - c));
         return Math.sqrt(s * (s - a) * (s - b) * (s - c));
     }
     @Override

@@ -1,6 +1,9 @@
 package com.example.calcservice.triangle.service.impl;
-import com.example.calcservice.triangle.model.RecTriangle;
+import com.example.calcservice.config.MapperConfig;
+import com.example.calcservice.triangle.model.RecTangle;
+import com.example.calcservice.triangle.model.RecTangleDTO;
 import com.example.calcservice.triangle.model.Triangle;
+import com.example.calcservice.triangle.model.TriangleDTO;
 import com.example.calcservice.triangle.service.TriangleInterface;
 import org.springframework.stereotype.Service;
 
@@ -9,32 +12,37 @@ import java.util.*;
 @Service
 public class TriangleService implements TriangleInterface {
     @Override
-    public Map<String, Double> resultCalcTriangle(double[] a) {
-        System.out.println(a);
-        Triangle triangle = new Triangle(a);
-        Map<String, Double> result = new HashMap<>();
-        // Если прямоугольный треугольник то выполняем еще и resultCalcRecTriangle();
-//         if(triangle.getType().equals("Прямоугольный")) {
-//            resultCalcRecTriangle();
-//        }
-        System.out.println(Triangle.builder().triangleType(triangle.getType()));
-        result.put(triangle.getKeyArea(), triangle.calcArea());
-        result.put(triangle.getKeyPer(), triangle.calcPer());
-        result.put(triangle.getKeyMed(), triangle.calcMed());
-        result.put(triangle.getKeyBess(), triangle.calcBess());
-        result.put(triangle.getGetKeyInCircle(), triangle.inCircleArea());
-        result.put(triangle.getGetKeyOutCircle(), triangle.outCircleArea());
-
-        // Второй параметр в map Double, поэтому мы не можем строку передать,
-        // придется это все делать не через мап, и наверное ключи созданные тоже удалять
-        // result.put(triangle.getKeyType(), triangle.getType());
-        return result;
+    public Triangle resultCalcTriangle(double a, double b ,double c) {
+        resultCalcRecTangle();
+        resultCalcTest(a, b, c);
+        Triangle triangle = new Triangle(a, b, c);
+        return Triangle.builder().
+                area(triangle.calcArea())
+                .per(triangle.calcPer())
+                .triangleType(triangle.getType())
+                .med(triangle.calcMed())
+                .bess(triangle.calcBess())
+                .inCircle(triangle.inCircleArea())
+                .outCircle(triangle.outCircleArea())
+                .build();
     }
     @Override
-    public Map<String, Double> resultCalcRecTriangle() {
-        RecTriangle recTriangle = new RecTriangle(90, 45, 45);
-        Map<String, Double> result = new HashMap<>();
-        result.put(recTriangle.getKeyRecArea(), recTriangle.calcArea());
-        return result;
+    public void resultCalcRecTangle() {
+       RecTangle recTangle = new RecTangle(40, 90);
+        MapperConfig mapper = new MapperConfig();
+        RecTangleDTO recTangleDTO = mapper.getMapper().map(recTangle, RecTangleDTO.class);
+        //System.out.println("Width: " + recTangleDTO.getWeight());
+       // System.out.println("Height: " + recTangleDTO.getHeight());
+       // recTangleDTO.setArea(recTangleDTO.getWeight() * recTangleDTO.getHeight());
+       // System.out.println("Area: " + recTangleDTO.getArea());
+    }
+
+    public void resultCalcTest(double a, double b, double c) {
+        Triangle triangle = new Triangle(a, b, c);
+        MapperConfig mapper = new MapperConfig();
+        TriangleDTO triangleDTO = mapper.getMapper().map(triangle, TriangleDTO.class);
+          System.out.println("Area: " + triangleDTO.getArea());
+//        System.out.println("AreaT: " + triangle.getArea());
+          System.out.println("Per: " + triangleDTO.getPer());
     }
 }
