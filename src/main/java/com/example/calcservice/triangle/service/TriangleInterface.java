@@ -6,7 +6,9 @@ import java.util.*;
 
 
 public interface TriangleInterface {
-    TriangleDTO resultCalcTriangle(double a, double b, double c);
+    TriangleDTO resultCalcTriangle(double a, double b, double c,
+                                   double angleA, double angleB, double angleC);
+
     void resultCalcRecTangle();
 
 }

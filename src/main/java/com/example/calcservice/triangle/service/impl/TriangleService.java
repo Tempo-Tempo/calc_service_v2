@@ -10,14 +10,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TriangleService implements TriangleInterface {
-
-    @Autowired
     MapperConfig mapper = new MapperConfig();
-    ModelMapper modelMapper = new ModelMapper();
     @Override
-    public TriangleDTO resultCalcTriangle(double a, double b ,double c) {
-        resultCalcRecTangle();
-        Triangle triangle = new Triangle(a, b, c);
+    public TriangleDTO resultCalcTriangle(double a, double b, double c,
+                                          double angleA, double angleB, double angleC)
+    {
+        Triangle triangle = new Triangle(a, b, c, angleA, angleB, angleC);
         Triangle.builder()
                 .area(triangle.calcArea())
                 .per(triangle.calcPer())
@@ -27,9 +25,7 @@ public class TriangleService implements TriangleInterface {
                 .inCircle(triangle.inCircleArea())
                 .outCircle(triangle.outCircleArea());
         TriangleDTO triangleDTO = mapper.getMapper().map(triangle, TriangleDTO.class);
-        TriangleDTO result = triangleDTO;
-        System.out.println("Area: " + triangleDTO);
-        return result;
+        return triangleDTO;
     }
     @Override
     public void resultCalcRecTangle() {
