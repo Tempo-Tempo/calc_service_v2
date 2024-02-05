@@ -29,7 +29,7 @@ public class TriangleService implements TriangleInterface {
     }
     @Override
     public void resultCalcRecTangle() {
-       RecTangle recTangle = new RecTangle(40, 90);
-        MapperConfig mapper = new MapperConfig();
+//       RecTangle recTangle = new RecTangle(40, 90);
+//        MapperConfig mapper = new MapperConfig();
     }
 }

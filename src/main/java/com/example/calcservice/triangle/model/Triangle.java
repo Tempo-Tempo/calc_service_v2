@@ -12,9 +12,6 @@ public class Triangle extends Figure {
     private double per;
     private double med;
     private double bess;
-    private double cos;
-    private double sin;
-    private double tang;
     private double inCircle;
     private double outCircle;
     private String typeTriangle;
@@ -35,14 +32,24 @@ public class Triangle extends Figure {
 
     @Override
     public double calcArea() {
+        calcAngles();
         if(a == 0 || b == 0 || c == 0) {
           return calcWithAngle(angleA, angleB, angleC);
         }
         double s = (a + b + c) / 2;
         return this.area = Math.sqrt(s * (s - a) * (s - b) * (s - c));
     }
+    public double calcAngles() {
+        if(angleB != 0 && angleC != 0) {
+           return this.angleA = 180 - (angleB + angleC);
+        } else if (angleA != 0 && angleB != 0) {
+            return this.angleC = 180 - (angleA + angleB);
+        } else  {
+            return this.angleB = 180 - (angleA + angleC);
+        }
+    };
+
     public double calcWithAngle(double angleA, double angleB, double angleC) {
-        System.out.println("work");
         if (a == 0 && angleA != 0) {
             this.a = Math.sqrt((Math.pow(b, 2) + Math.pow(c, 2)) - (2 * b * c * Math.cos(angleA)));
         } else if (b == 0 && angleB != 0) {
@@ -53,7 +60,6 @@ public class Triangle extends Figure {
           System.out.println(this.c + "this.c");
         }
         calcArea();
-        System.out.println(this.c + "this.c");
         return this.area;
     }
     @Override
@@ -73,27 +79,23 @@ public class Triangle extends Figure {
                     (a + b);
     }
     public String getType() {
-        double[] array = new double[]{a, b, c};
-        Arrays.sort(array);
-          double angle = Math.toDegrees(Math.atan2(array[0], array[1]));
-//        double angle2 = Math.acos((Math.pow(array[0], 2) + Math.pow(array[1], 2)) - Math.pow(array[2], 2))
-//                / (2 * array[0] * array[1]);
-       System.out.println(angle + "test1");
-//        System.out.println(angle2 + "test2");
         if (a == b && b == c) {
             return this.typeTriangle = "Равносторонний";
+        } else if (a == b && angleC == 90 || b == c && angleA == 90 || a == c && angleB == 90) {
+            return this.typeTriangle = "Прямоугольный";
         } else if (a == b || b == c || a == c) {
             return this.typeTriangle = "Равнобедренный";
-        } else if (Math.pow(array[0], 2) + Math.pow(array[1], 2) == Math.pow(array[2], 2)) {
-            return this.typeTriangle = "Прямоугольный";
-        } else if (Math.pow(array[0], 2) + Math.pow(array[1], 2) > Math.pow(array[2], 2)) {
-            return this.typeTriangle = "Остроугольный";
-        } else if (Math.pow(array[2], 2) > Math.pow(array[1], 2) + Math.pow(array[0], 2)) {
-            return this.typeTriangle = "Тупоугольный";
         } else {
             return this.typeTriangle = "Разносторонний";
         }
     }
+//     else if (Math.pow(array[0], 2) + Math.pow(array[1], 2) == Math.pow(array[2], 2)) {
+//        return this.typeTriangle = "Прямоугольный";
+//    } else if (Math.pow(array[0], 2) + Math.pow(array[1], 2) > Math.pow(array[2], 2)) {
+//        return this.typeTriangle = "Остроугольный";
+//    } else if (Math.pow(array[2], 2) > Math.pow(array[1], 2) + Math.pow(array[0], 2)) {
+//        return this.typeTriangle = "Тупоугольный";
+//    }
     public double inCircleArea() {
        double r = calcArea() / (calcPer() / 2);
        return this.inCircle = pi * Math.pow(r, 2);

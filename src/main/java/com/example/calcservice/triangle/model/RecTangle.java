@@ -7,15 +7,15 @@ import java.util.Arrays;
 @Data
 public class RecTangle extends Triangle {
 
-    private double weight;
-    private double height;
+    private double cos;
+    private double sin;
+    private double tang;
 
-    private final String keyRecArea = "recArea";
 
-    public RecTangle(double a, double b) {
-        this.weight = a;
-        this.height = b;
-    }
+//    public RecTangle(double a, double b) {
+//        this.weight = a;
+//        this.height = b;
+//    }
 
 
    //@Override
