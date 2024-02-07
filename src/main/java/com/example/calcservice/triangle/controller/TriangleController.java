@@ -1,13 +1,8 @@
 package com.example.calcservice.triangle.controller;
-import com.example.calcservice.triangle.model.Triangle;
 import com.example.calcservice.triangle.model.TriangleDTO;
 import com.example.calcservice.triangle.service.TriangleInterface;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 @CrossOrigin(origins = {"http://localhost:3000"})
 

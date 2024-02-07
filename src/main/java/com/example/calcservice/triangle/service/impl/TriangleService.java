@@ -19,12 +19,13 @@ public class TriangleService implements TriangleInterface {
         Triangle.builder()
                 .area(triangle.calcArea())
                 .per(triangle.calcPer())
-                .typeTriangle(triangle.getType())
                 .med(triangle.calcMed())
                 .bess(triangle.calcBess())
                 .inCircle(triangle.inCircleArea())
-                .outCircle(triangle.outCircleArea());
+                .outCircle(triangle.outCircleArea())
+                .typeTriangle(triangle.getType());
         TriangleDTO triangleDTO = mapper.getMapper().map(triangle, TriangleDTO.class);
+
         return triangleDTO;
     }
     @Override
