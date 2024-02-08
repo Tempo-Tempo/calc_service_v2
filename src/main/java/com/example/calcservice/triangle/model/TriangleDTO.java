@@ -9,6 +9,7 @@ public class TriangleDTO {
     private double med;
     private double bess;
     private String typeTriangle;
+    private double height;
     private double inCircle;
     private double outCircle;
     private double cos;

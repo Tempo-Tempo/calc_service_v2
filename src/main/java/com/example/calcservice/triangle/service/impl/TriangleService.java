@@ -4,8 +4,6 @@ import com.example.calcservice.triangle.model.RecTangle;
 import com.example.calcservice.triangle.model.Triangle;
 import com.example.calcservice.triangle.model.TriangleDTO;
 import com.example.calcservice.triangle.service.TriangleInterface;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,16 +19,22 @@ public class TriangleService implements TriangleInterface {
                 .per(triangle.calcPer())
                 .med(triangle.calcMed())
                 .bess(triangle.calcBess())
+                .height(triangle.calcHeight())
                 .inCircle(triangle.inCircleArea())
                 .outCircle(triangle.outCircleArea())
                 .typeTriangle(triangle.getType());
-        TriangleDTO triangleDTO = mapper.getMapper().map(triangle, TriangleDTO.class);
-
-        return triangleDTO;
-    }
-    @Override
-    public void resultCalcRecTangle() {
-//       RecTangle recTangle = new RecTangle(40, 90);
-//        MapperConfig mapper = new MapperConfig();
+        TriangleDTO result = mapper.getMapper().map(triangle, TriangleDTO.class);
+        if(triangle.getType().equals("Прямоугольный")) {
+            RecTangle recTangle = new RecTangle();
+            recTangle.calcSinRec();
+            recTangle.calcCosRec();
+            recTangle.calcTanRec();
+            System.out.println(recTangle.getCos() + " COS");
+            System.out.println(recTangle.getSin() + " SIN");
+            System.out.println(recTangle.getTang() + " TANG");
+            mapper.getMapper().map(recTangle, TriangleDTO.class);
+        }
+        System.out.println(result + "NADO NADO");
+        return result;
     }
 }
