@@ -42,11 +42,11 @@ public class Triangle extends Figure {
     }
     public void calcAngles() {
         if(angleB != 0 && angleC != 0) {
-           this.angleA = 180 - (angleB + angleC);
+           this.angleA = Math.toRadians(180) - (angleB + angleC);
         } else if (angleA != 0 && angleB != 0) {
-           this.angleC = 180 - (angleA + angleB);
+           this.angleC = Math.toRadians(180) - (angleA + angleB);
         } else if (angleA != 0 && angleC != 0) {
-            this.angleB = 180 - (angleA + angleC);
+            this.angleB = Math.toRadians(180) - (angleA + angleC);
         } else {
             return;
         }
@@ -62,8 +62,13 @@ public class Triangle extends Figure {
         } else if (c == 0 && angleC != 0) {
             this.c = Math.sqrt((Math.pow(a, 2) + Math.pow(b, 2)) - (2 * a * b * Math.cos(angleC)));
             System.out.println(c + " this.c");
+        } else if (c == 0 && angleB != 0){
+            double aSquared = Math.sqrt((Math.pow(b, 2) + Math.pow(c, 2) - 2 * b * c * Math.cos(angleB)));
+            double cosAlpha = (Math.pow(b, 2) + Math.pow(c, 2) - aSquared) / (2 * b * c);
+            double test = Math.acos(cosAlpha);
+            System.out.println(Math.toDegrees(test) + " this.angleA");
         } else {
-          System.out.println(this.c + "this.c");
+
         }
         calcArea();
     }
@@ -71,17 +76,15 @@ public class Triangle extends Figure {
     public void calcAnglesWithSides() {
         if  (this.angleA == 0) {
             double angleA = Math.acos((b * b + c * c - a * a) / (2 * b * c));
-            this.angleA = Math.round(Math.toDegrees(angleA));
-            System.out.println(this.angleA + "angle A");
-        } else if (this.angleB == 0) {
+            this.angleA = Math.toRadians(Math.toDegrees(angleA));
+        }
+        if (this.angleB == 0) {
             double angleB = Math.acos((a * a + c * c - b * b) / (2 * a * c));
-            this.angleB = Math.round(Math.toDegrees(angleB));
-            System.out.println(this.angleB + "angle B");
+            this.angleB = Math.toRadians(Math.toDegrees(angleB));
         }
         if (this.angleC == 0) {
             double angleC = Math.acos((a * a + b * b - c * c) / (2 * a * b));
-            this.angleC = Math.round(Math.toDegrees(angleC));
-            System.out.println(this.angleC + "angle C");
+            this.angleC = Math.toRadians(Math.toDegrees(angleC));
         };
     };
     @Override
@@ -106,11 +109,13 @@ public class Triangle extends Figure {
     public String getType() {
         if (a == b && b == c) {
             return this.typeTriangle = "Равносторонний";
-        } else if (Math.pow(a, 2) + Math.pow(b, 2) == Math.pow(c, 2) && angleC == 90
-                || Math.pow(b, 2) + Math.pow(c, 2) == Math.pow(a, 2) && angleA == 90
-                || Math.pow(a, 2) + Math.pow(c, 2) == Math.pow(b, 2) && angleB == 90) {
+        } else if (Math.pow(a, 2) + Math.pow(b, 2) == Math.pow(c, 2) && angleC == Math.toRadians(90)
+                || Math.pow(b, 2) + Math.pow(c, 2) == Math.pow(a, 2) && angleA == Math.toRadians(90)
+                || Math.pow(a, 2) + Math.pow(c, 2) == Math.pow(b, 2) && angleB == Math.toRadians(90)) {
             return this.typeTriangle = "Прямоугольный";
-        } else if (a == b || b == c || a == c) {
+        } else if (a == b && angleA == angleB
+                || b == c && angleB == angleC
+                || a == c && angleA == angleC) {
             return this.typeTriangle = "Равнобедренный";
         } else {
             return this.typeTriangle = "Разносторонний";

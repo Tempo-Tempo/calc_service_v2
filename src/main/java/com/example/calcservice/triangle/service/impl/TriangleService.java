@@ -13,7 +13,10 @@ public class TriangleService implements TriangleInterface {
     public TriangleDTO resultCalcTriangle(double a, double b, double c,
                                           double angleA, double angleB, double angleC)
     {
-        Triangle triangle = new Triangle(a, b, c, angleA, angleB, angleC);
+        Triangle triangle = new Triangle(a, b, c,
+                Math.toRadians(angleA),
+                Math.toRadians(angleB),
+                Math.toRadians(angleC));
         Triangle.builder()
                 .area(triangle.calcArea())
                 .per(triangle.calcPer())
