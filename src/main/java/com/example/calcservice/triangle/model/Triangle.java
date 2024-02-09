@@ -37,6 +37,35 @@ public class Triangle extends Figure {
           calcWithAngle(angleA, angleB, angleC);
         }
         calcAnglesWithSides();
+        System.out.println(this.a + " ФИНАЛ СТОРОНА А");
+        System.out.println(this.b + " ФИНАЛ СТОРОНА B");
+        System.out.println(this.c + " ФИНАЛ СТОРОНА C");
+        System.out.println(Math.round(Math.toDegrees(this.angleA)) + " ФИНАЛ УГОЛ А");
+        System.out.println(Math.round(Math.toDegrees(this.angleB)) + " ФИНАЛ УГОЛ B");
+        System.out.println(Math.round(Math.toDegrees(this.angleC)) + " ФИНАЛ УГОЛ C");
+        // ТАКОГО ТРЕУГОЛЬНИКА НЕ СУЩЕСТВУЕТ! Проверка по  формуле синусов
+//                if(Math.sin(this.angleC) * a / c > 1) {
+//                    System.out.println("СРАБОТАЛА ПРОВЕРКА 1");
+//                } else if (Math.sin(this.angleC) * b / c > 1) {
+//                    System.out.println("СРАБОТАЛА ПРОВЕРКА 2");
+//                } else if(Math.sin(this.angleB) * a / b > 1)  {
+//                    System.out.println("СРАБОТАЛА ПРОВЕРКА 3");
+//                } else if (Math.sin(this.angleB) * c / b > 1) {
+//                    System.out.println("СРАБОТАЛА ПРОВЕРКА 4");
+//                } else if(Math.sin(this.angleA) * c / a > 1) {
+//                    System.out.println("СРАБОТАЛА ПРОВЕРКА 5");
+//                } else if (Math.sin(this.angleA) * b / a > 1) {
+//                    System.out.println("СРАБОТАЛА ПРОВЕРКА 6");
+//                }
+        double test1 = (a / Math.sin(angleA));
+        double test2 = (b / Math.sin(angleB));
+        double test3 = (c / Math.sin(angleC));
+        System.out.println(test1 + " test 1");
+        System.out.println(test2 + " test 2");
+        System.out.println(test3 + " test 3");
+        if(test1 != test2 || test1 != test3 || test2 != test3) {
+            System.out.println("СРАБОТАЛА ПРОВЕРКА");
+        }
         double s = (a + b + c) / 2;
         return this.area = Math.sqrt(s * (s - a) * (s - b) * (s - c));
     }
@@ -63,12 +92,11 @@ public class Triangle extends Figure {
             this.c = Math.sqrt((Math.pow(a, 2) + Math.pow(b, 2)) - (2 * a * b * Math.cos(angleC)));
             System.out.println(c + " this.c");
         } else if (c == 0 && angleB != 0){
-            double aSquared = Math.sqrt((Math.pow(b, 2) + Math.pow(c, 2) - 2 * b * c * Math.cos(angleB)));
-            double cosAlpha = (Math.pow(b, 2) + Math.pow(c, 2) - aSquared) / (2 * b * c);
-            double test = Math.acos(cosAlpha);
-            System.out.println(Math.toDegrees(test) + " this.angleA");
-        } else {
-
+            // (Math.sin(angleA) * b / a) <= 1 && (Math.sin(angleA) * b / a >= -1)
+            //this.angleB = Math.asin(Math.sin(angleA) * b / a);
+//            double test = Math.toDegrees(angleA);
+//            double test2 = Math.sin(test);
+//            System.out.println(test2 + " this.angleA");
         }
         calcArea();
     }
