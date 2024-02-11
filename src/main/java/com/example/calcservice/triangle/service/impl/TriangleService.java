@@ -25,18 +25,19 @@ public class TriangleService implements TriangleInterface {
                 .height(triangle.calcHeight())
                 .inCircle(triangle.inCircleArea())
                 .outCircle(triangle.outCircleArea())
-                .typeTriangle(triangle.getType());
+                .typeTriangle(triangle.getType()).
+                testErr(triangle.getTestErr());
         TriangleDTO result = mapper.getMapper().map(triangle, TriangleDTO.class);
-        if(triangle.getType().equals("Прямоугольный")) {
-            RecTangle recTangle = new RecTangle();
-            recTangle.calcSinRec();
-            recTangle.calcCosRec();
-            recTangle.calcTanRec();
-            System.out.println(recTangle.getCos() + " COS");
-            System.out.println(recTangle.getSin() + " SIN");
-            System.out.println(recTangle.getTang() + " TANG");
-            mapper.getMapper().map(recTangle, TriangleDTO.class);
-        }
+//        if(triangle.getType().equals("Прямоугольный")) {
+//            RecTangle recTangle = new RecTangle();
+//            recTangle.calcSinRec();
+//            recTangle.calcCosRec();
+//            recTangle.calcTanRec();
+//            System.out.println(recTangle.getCos() + " COS");
+//            System.out.println(recTangle.getSin() + " SIN");
+//            System.out.println(recTangle.getTang() + " TANG");
+//            mapper.getMapper().map(recTangle, TriangleDTO.class);
+//        }
         System.out.println(result + "NADO NADO");
         return result;
     }

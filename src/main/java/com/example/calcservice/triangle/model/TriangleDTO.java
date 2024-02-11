@@ -15,6 +15,7 @@ public class TriangleDTO {
     private double cos;
     private double sin;
     private double tang;
+    private String testErr;
 
     public TriangleDTO() {};
 }
