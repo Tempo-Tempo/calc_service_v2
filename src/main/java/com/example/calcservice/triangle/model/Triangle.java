@@ -38,11 +38,7 @@ public class Triangle extends Figure {
     @Override
     public double calcArea() {
         calcAngles();
-        if(a == 0 || b == 0  || c == 0) {
-            calcWithAngle();
-        }
         calcAnglesWithSides();
-        this.a = Math.round(a);
         System.out.println(Math.round(Math.toDegrees(this.angleA)) + " sinA");
         System.out.println(Math.round(Math.toDegrees(this.angleB)) + " asinB");
         System.out.println(Math.round(Math.toDegrees(this.angleC)) + " asinC");
@@ -57,11 +53,11 @@ public class Triangle extends Figure {
         } else if (angleA != 0 && angleC != 0) {
             this.angleB = Math.toRadians(180) - (angleA + angleC);
         } else {
-            calcWithAngleSin();
+            return;
         }
     };
 
-    public void calcWithAngle() {
+    public void calcWithAngleCos() {
         if (a == 0 && angleA != 0) {
             this.a = Math.sqrt((Math.pow(b, 2) + Math.pow(c, 2)) - (2 * b * c * Math.cos(angleA)));
             System.out.println(a + " this.a");
@@ -76,20 +72,23 @@ public class Triangle extends Figure {
         }
     }
     public void calcWithAngleSin() {
-         if(c == 0 && angleC == 0 && angleB == 0 && angleA != 0) {
+         if(c == 0 && angleC == 0 && angleB == 0 && angleA != 0
+                 || a != 0 && b != 0 && c != 0 && angleB == 0) {
             double sinB =  Math.sin(this.angleA) * b / a;
-             System.out.println(sinB + " здесь мы делаем сторону а 0");
+             System.out.println(angleA + " УСЛОВИЕ 1");
             if (sinB < -1.0 || sinB > 1.0 ) {
                 this.testErr = "Такого треугольника не существует.";
                 return;
             } else {
-                this.angleB = Math.asin(sinB);
                 calcAngles();
+                this.angleB = Math.asin(sinB);
                 return;
             }
          }
-        if(c == 0 && angleC == 0 && angleB != 0) {
+        if(c == 0 && angleC == 0 && angleB != 0
+                || a != 0 && b != 0 && c != 0 && angleC == 0) {
             double sinC =  Math.sin(this.angleB) * a / b;
+            System.out.println(angleA + " УСЛОВИЕ 2");
             if (sinC < -1.0 || sinC > 1.0 ) {
                 this.testErr = "Такого треугольника не существует.";
                 return;
@@ -99,8 +98,10 @@ public class Triangle extends Figure {
                 System.out.println(Math.toDegrees(angleA) + " alo");
             }
         }
-        if(b == 0 && angleB == 0 && angleA != 0 ) {
+        if(b == 0 && angleB == 0 && angleA != 0
+                || a != 0 && b != 0 && c != 0 && angleB == 0) {
             double sinB = Math.sin(this.angleA) * c / a;
+            System.out.println(angleA + " УСЛОВИЕ 3");
             if (sinB < -1.0 || sinB > 1.0 ) {
                 this.testErr = "Такого треугольника не существует.";
                 return;
@@ -108,8 +109,10 @@ public class Triangle extends Figure {
                 this.angleB = Math.asin(sinB);
             }
         }
-        if(b == 0 && angleB == 0 && angleC != 0 ) {
+        if(b == 0 && angleB == 0 && angleC != 0
+                || a != 0 && b != 0 && c != 0 && angleB == 0) {
             double sinB = Math.sin(this.angleC) * a / c;
+            System.out.println(angleA + " УСЛОВИЕ 4");
             if (sinB < -1.0 || sinB > 1.0 ) {
                 this.testErr = "Такого треугольника не существует.";
                 return;
@@ -117,8 +120,10 @@ public class Triangle extends Figure {
                 this.angleB = Math.asin(sinB);
             }
         }
-        if(a == 0 && angleA == 0 && angleB != 0 && b != 0 && c != 0) {
+        if(a == 0 && angleA == 0 && angleB != 0
+                || a != 0 && b != 0 && c != 0 && angleC == 0) {
             double sinC =  Math.sin(this.angleB) * c / b;
+            System.out.println(angleA + " УСЛОВИЕ 5");
             System.out.println(sinC + " alo");
             if (sinC < -1.0 || sinC > 1.0 ) {
                 this.testErr = "Такого треугольника не существует.";
@@ -128,30 +133,30 @@ public class Triangle extends Figure {
             }
 
         }
-        if(a == 0 && angleA == 0 && angleC != 0 && b != 0 && c != 0) {
+        if(a == 0 && angleA == 0 && angleC != 0
+                || a != 0 && b != 0 && c != 0 && angleB == 0) {
             double sinB =  Math.sin(this.angleC) * b / c;
-            System.out.println(sinB + " alo");
+            System.out.println(angleA + " УСЛОВИЕ 6");
             if (sinB < -1.0 || sinB > 1.0 ) {
                 this.testErr = "Такого треугольника не существует.";
                 return;
             } else {
-                this.angleC = Math.asin(sinB);
+                this.angleB = Math.asin(sinB);
             }
-
         }
     }
 
     public void calcAnglesWithSides() {
-        if (this.angleA == 0) {
+        if (a != 0 && b != 0 && c != 0 && angleA == 0 && angleB == 0 && angleC == 0)  {
             this.angleA = Math.acos((b * b + c * c - a * a) / (2 * b * c));
-        }
-        if (this.angleB == 0) {
             this.angleB = Math.acos((a * a + c * c - b * b) / (2 * a * c));
-        }
-        if (this.angleC == 0) {
             this.angleC = Math.acos((a * a + b * b - c * c) / (2 * a * b));
-        };
-
+            calcWithAngleSin();
+        } else {
+            calcWithAngleSin();
+            calcWithAngleCos();
+            calcAngles();
+        }
     };
 
     public void formatCeil() {
@@ -185,17 +190,24 @@ public class Triangle extends Figure {
     }
     public String getType() {
         formatCeil();
-        if (a == b && b == c
-                && angleA == angleB && angleB == angleC) {
+        if (a == b && b == c && angleA == angleB && angleB == angleC) {
             return this.typeTriangle = "Равносторонний";
-        } else if (angleA == 90
-                || angleB == 90
-                || angleC == 90) {
-            return this.typeTriangle = "Прямоугольный";
         } else if (Math.pow(a, 2) + Math.pow(b, 2) == Math.pow(c, 2) && angleC == 90
-                  || Math.pow(b, 2) + Math.pow(c, 2) == Math.pow(a, 2) && angleA == 90
-                   || Math.pow(a, 2) + Math.pow(c, 2) == Math.pow(b, 2) && angleB == 90) {
+                || Math.pow(b, 2) + Math.pow(c, 2) == Math.pow(a, 2) && angleA == 90
+                || Math.pow(a, 2) + Math.pow(c, 2) == Math.pow(b, 2) && angleB == 90) {
+            return this.typeTriangle = "Прямоугольный";
+        } else if (a == b && angleA == angleB
+                || b == c && angleB == angleC
+                || c == a && angleC == angleA) {
             return this.typeTriangle = "Равнобедренный";
+        } else if (Math.pow(a, 2) + Math.pow(b, 2) < Math.pow(c, 2)
+                || Math.pow(b, 2) + Math.pow(c, 2) < Math.pow(a, 2)
+                || Math.pow(a, 2) + Math.pow(c, 2) < Math.pow(b, 2)) {
+            return this.typeTriangle = "Тупоугольный";
+        } else if (Math.pow(a, 2) + Math.pow(b, 2) > Math.pow(c, 2)
+                || Math.pow(b, 2) + Math.pow(c, 2) > Math.pow(a, 2)
+                || Math.pow(a, 2) + Math.pow(c, 2) > Math.pow(b, 2) ) {
+            return this.typeTriangle = "Остроугольный";
         } else {
             return this.typeTriangle = "Разносторонний";
         }
