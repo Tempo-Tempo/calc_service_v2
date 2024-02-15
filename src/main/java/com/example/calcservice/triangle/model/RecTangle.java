@@ -16,24 +16,20 @@ public class RecTangle extends Triangle {
 
     public  RecTangle() {};
     public double calcSinRec() {
-        double angleA = Math.toRadians(this.angleA);
-//        double angleB = Math.toRadians(this.angleB);
-//        double angleC = Math.toRadians(this.angleC);
         double test = this.sin = Math.sin(angleA);
         System.out.println(test + " TEST SIN");
-        return  test;
+        return  Math.toRadians(test);
     }
     public double calcCosRec() {
-        double angleA = Math.toRadians(this.angleA);
         double test = this.cos = Math.cos(angleA);
         System.out.println(test + " TEST COS");
-        return  test;
+        return  Math.toRadians(test);
     }
     public double calcTanRec() {
-        double angleA = Math.toRadians(this.angleA);
+        System.out.println(angleA + " TEST TANG");
         double test = this.tang = Math.tan(angleA);
-        System.out.println(test + " TEST TANG");
-        return test;
+
+        return Math.toRadians(test);
     }
 
 

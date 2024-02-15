@@ -17,5 +17,13 @@ public class TriangleDTO {
     private double tang;
     private String testErr;
 
+    private double a;
+    private double b;
+    private double c;
+
+    private double angleA;
+    private double angleB;
+    private double angleC;
+
     public TriangleDTO() {};
 }
