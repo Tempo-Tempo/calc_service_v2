@@ -37,7 +37,6 @@ public class Triangle extends Figure {
     @Override
     public double calcArea() {
         calcAngles();
-//        calcWithAngleCos();
         calcAnglesWithSides();
         double s = (a + b + c) / 2;
         return this.area = Math.sqrt(s * (s - a) * (s - b) * (s - c));
@@ -71,10 +70,6 @@ public class Triangle extends Figure {
     public void calcWithAngleSin() {
          if(angleB == 0 && angleA != 0 && b != 0 && a != 0) {
             double sinB = Math.sin(this.angleA) * b / a;
-             System.out.println(sinB + " УСЛОВИЕ 1");
-             System.out.println(a + " УСЛОВИЕ 1 this.a");
-             System.out.println(b + " УСЛОВИЕ 1 this.b");
-             System.out.println(c + " УСЛОВИЕ 1 this.c");
             if (sinB < -1.0 || sinB > 1.0) {
                 this.testErr = "Такого треугольника не существует.";
             } else {
