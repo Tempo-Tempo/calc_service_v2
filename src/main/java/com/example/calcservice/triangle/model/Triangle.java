@@ -148,7 +148,7 @@ public class Triangle extends Figure {
                     (a + b);
     }
     public double calcHeight() {
-            return this.height = (2 * this.area) / a;
+            return this.height = (2 * this.area) / b;
     }
     public String getType() {
         formatCeil();
