@@ -1,31 +1,39 @@
 package com.example.calcservice.triangle.model;
 import com.example.calcservice.Figure;
+import com.example.calcservice.triangle.helpers.BigDecimalMath;
 import lombok.*;
 
-import java.text.DecimalFormat;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 
 
 @Data
 @Builder
 @AllArgsConstructor
 public class Triangle extends Figure {
-    private double area;
-    private double per;
-    private double med;
-    private double bess;
-    private double height;
-    private double inCircle;
-    private double outCircle;
+    private BigDecimal area;
+    private BigDecimal two = new BigDecimal("2");
+    private BigDecimal zero = new BigDecimal("0");
+    BigDecimal angleSum = new BigDecimal("180");
+    private BigDecimal per;
+    private BigDecimal med;
+    private BigDecimal bess;
+    private BigDecimal height;
+    private BigDecimal inCircle;
+    private BigDecimal outCircle;
     private String typeTriangle;
     private String testErr;
 
-    protected double angleA;
-    protected double angleB;
-    protected double angleC;
+    protected BigDecimal angleA;
+    protected BigDecimal angleB;
+    protected BigDecimal angleC;
 
+    BigDecimalMath helper = new BigDecimalMath();
 
     public Triangle() {};
-    public Triangle(double a, double b, double c, double angleA, double angleB, double angleC) {
+    public Triangle(BigDecimal a, BigDecimal b, BigDecimal c,
+                    BigDecimal angleA, BigDecimal angleB, BigDecimal angleC) {
         this.a = a;
         this.b = b;
         this.c = c;
@@ -35,154 +43,232 @@ public class Triangle extends Figure {
     };
 
     @Override
-    public double calcArea() {
+    public BigDecimal calcArea() {
         calcAngles();
         calcAnglesWithSides();
-        double s = (a + b + c) / 2;
-        return this.area = Math.sqrt(s * (s - a) * (s - b) * (s - c));
+
+        System.out.println(this.a + " this. a");
+        System.out.println(this.b + " this. b");
+        System.out.println(this.c + " this. c");
+        System.out.println(this.angleA + " angleA ada");
+        System.out.println(this.angleB + " angleB ada");
+        System.out.println(this.angleC + " angleC ada");
+        BigDecimal s = (a.add(b).add(c)).divide(two, 2 , RoundingMode.HALF_UP);
+        BigDecimal area = s.multiply(s.subtract(a))
+                             .multiply(s.subtract(b))
+                             .multiply(s.subtract(c));
+        return this.area = area.sqrt(MathContext.DECIMAL128);
     }
     public void calcAngles() {
-        if(angleB != 0 && angleC != 0) {
-           this.angleA = Math.toRadians(180) - (angleB + angleC);
-        } else if (angleA != 0 && angleB != 0) {
-           this.angleC = Math.toRadians(180) - (angleA + angleB);
-        } else if (angleA != 0 && angleC != 0) {
-            this.angleB = Math.toRadians(180) - (angleA + angleC);
+        BigDecimal angleSumToRadians = angleSum.multiply(pi).divide(angleSum, 8, RoundingMode.HALF_UP);
+        System.out.println("Вычитаем из 180 уголы");
+        if(angleB.compareTo(zero) != 0 && angleC.compareTo(zero) != 0 ) {
+           this.angleA = angleSumToRadians.subtract(angleB.add(angleC));
+        } else if (angleB.compareTo(zero) != 0 && angleA.compareTo(zero) != 0) {
+           this.angleC = angleSumToRadians.subtract(angleB.add(angleA));
+        } else if (angleA.compareTo(zero) != 0 && angleC.compareTo(zero) != 0) {
+            this.angleB = angleSumToRadians.subtract(angleA.add(angleC));
         } else {
             return;
         }
     };
 
     public void calcWithAngleCos() {
-        if (a == 0 && angleA != 0) {
-            this.a = Math.sqrt((Math.pow(b, 2) + Math.pow(c, 2)) - (2 * b * c * Math.cos(angleA)));
-        } else if (b == 0 && angleB != 0) {
-            this.b = Math.sqrt((Math.pow(a, 2) + Math.pow(c, 2)) - (2 * a * c * Math.cos(angleB)));
-        } else if (c == 0 && angleC != 0 ) {
-            this.c = Math.sqrt((Math.pow(a, 2) + Math.pow(b, 2)) - (2 * a * b * Math.cos(angleC)));
+        System.out.println("Считаем косинус");
+        if (b.compareTo(zero) != 0 && c.compareTo(zero) != 0 && angleA.compareTo(zero) != 0) {
+            BigDecimal bSquared = b.multiply(b);
+            BigDecimal cSquared = c.multiply(c);
+            BigDecimal cosA = helper.cosine(angleA);
+            BigDecimal result = bSquared.add(cSquared).subtract(two.multiply(b).multiply(c).multiply(cosA));
+            System.out.println("Косинус если а == 0");
+            this.a = result.sqrt(MathContext.DECIMAL128).setScale(0, RoundingMode.HALF_UP);
+            System.out.println(a + " this.aaa");
+        } else if (a.compareTo(zero) != 0 && c.compareTo(zero) != 0 && angleB.compareTo(zero) != 0) {
+            BigDecimal aSquared = a.multiply(a);
+            BigDecimal cSquared = c.multiply(c);
+            BigDecimal cosB = helper.cosine(angleB);
+            BigDecimal result = aSquared.add(cSquared).subtract(two.multiply(a).multiply(c).multiply(cosB));
+            this.b = result.sqrt(MathContext.DECIMAL128).setScale(0, RoundingMode.HALF_UP);
+            System.out.println("Косинус если b == 0");
+            System.out.println(b + " this.bbb");
+        } else if (a.compareTo(zero) != 0 && b.compareTo(zero) != 0 && angleC.compareTo(zero) != 0 ) {
+            BigDecimal aSquared = a.multiply(a);
+            BigDecimal bSquared = b.multiply(b);
+            BigDecimal cosC = helper.cosine(angleC);
+            BigDecimal result = aSquared.add(bSquared).subtract(two.multiply(a).multiply(c).multiply(cosC));
+            this.c = result.sqrt(MathContext.DECIMAL128).setScale(0, RoundingMode.HALF_UP);
+            System.out.println(c + " this.ccc");
         } else {
             calcWithAngleSin();
         }
     }
     public void calcWithAngleSin() {
-         if(angleB == 0 && angleA != 0 && b != 0 && a != 0) {
-            double sinB = Math.sin(this.angleA) * b / a;    
-            if (sinB < -1.0 || sinB > 1.0) {
+        System.out.println("Считаем синус");
+        BigDecimal minusOne = new BigDecimal("-1.0");
+        BigDecimal one = new BigDecimal("1.0");
+         if(angleB.compareTo(zero) == 0 && angleA.compareTo(zero) != 0 && a.compareTo(zero) != 0 && b.compareTo(zero) != 0) {
+            BigDecimal sinB = helper.sinus(angleA).multiply(b).divide(a, 1, RoundingMode.HALF_UP);
+             System.out.println(sinB + " Условие 1 sinB");
+            if (sinB.compareTo(minusOne) < 0 || sinB.compareTo(one) > 0) {
                 this.testErr = "Такого треугольника не существует.";
             } else {
-                this.angleB = Math.asin(sinB);;
+                this.angleB = helper.arcSinus(sinB);
             }
-         } else if(angleC == 0 && angleB != 0 && a != 0 && b != 0) {
-            double sinC =  Math.sin(this.angleB) * a / b;
-            if (sinC < -1.0 || sinC > 1.0 ) {
-                this.testErr = "Такого треугольника не существует.";
-            } else {
-                this.angleC = Math.asin(sinC);
-            }
-        } else if(angleB == 0 && angleA != 0 && c != 0 && a != 0) {
-            double sinB = Math.sin(this.angleA) * c / a;
-            if (sinB < -1.0 || sinB > 1.0 ) {
-                this.testErr = "Такого треугольника не существует.";
-            } else {
-                this.angleB = Math.asin(sinB);
-            }
-        } else if(angleB == 0 && angleC != 0 && a != 0 && c != 0) {
-            double sinB = Math.sin(this.angleC) * a / c;
-            if (sinB < -1.0 || sinB > 1.0 ) {
-                this.testErr = "Такого треугольника не существует.";
-                return;
-            } else {
-                this.angleB = Math.asin(sinB);
-            }
-        } else if(angleC == 0 && angleB != 0 && c != 0 && b != 0) {
-            double sinC =  Math.sin(this.angleB) * c / b;
-            if (sinC < -1.0 || sinC > 1.0 ) {
-                this.testErr = "Такого треугольника не существует.";
-            } else {
-                this.angleC = Math.asin(sinC);
-            }
-        } else if(angleB == 0 && angleC != 0 && b != 0 && c != 0) {
-            double sinB =  Math.sin(this.angleC) * b / c;
-            if (sinB < -1.0 || sinB > 1.0 ) {
-                this.testErr = "Такого треугольника не существует.";
-            } else {
-                this.angleB = Math.asin(sinB);
-            }
+         } else if(angleA.compareTo(zero) == 0 && angleB.compareTo(zero) != 0 && a.compareTo(zero) != 0 && b.compareTo(zero) != 0) {
+             BigDecimal sinA = helper.sinus(angleB).multiply(a).divide(b, 1, RoundingMode.HALF_UP);
+             System.out.println("Условие 2");
+             if (sinA.compareTo(minusOne) < 0 || sinA.compareTo(one) > 0) {
+                 this.testErr = "Такого треугольника не существует.";
+             } else {
+                 this.angleA = helper.arcSinus(sinA);
+             }
+         } else if(angleC.compareTo(zero) == 0 && angleA.compareTo(zero) != 0 && c.compareTo(zero) != 0 && a.compareTo(zero) != 0) {
+             BigDecimal sinC = helper.sinus(angleA).multiply(c).divide(a, 0, RoundingMode.HALF_UP);
+             System.out.println(sinC  + " Условие 3 sinC");
+             if (sinC.compareTo(minusOne) < 0 || sinC.compareTo(one) > 0) {
+                 this.testErr = "Такого треугольника не существует.";
+                 return;
+             } else {
+                 this.angleC = helper.arcSinus(sinC);
+                 System.out.println(this.angleC  + " Условие 3 angleC");
+             }
+         } else if(angleA.compareTo(zero) == 0 && angleC.compareTo(zero) != 0 && a.compareTo(zero) != 0 && c.compareTo(zero) != 0) {
+             BigDecimal sinA = helper.sinus(angleC).multiply(a).divide(c, 1, RoundingMode.HALF_UP);
+             System.out.println("Условие 4");
+             if (sinA.compareTo(minusOne) < 0 || sinA.compareTo(one) > 0) {
+                 this.testErr = "Такого треугольника не существует.";
+             } else {
+                 this.angleA = helper.arcSinus(sinA);
+             }
+         } else if(angleC.compareTo(zero) == 0 && angleB.compareTo(zero) != 0 && c.compareTo(zero) != 0 && b.compareTo(zero) != 0) {
+             BigDecimal sinC = helper.sinus(angleB).multiply(c).divide(b, 1, RoundingMode.HALF_UP);
+             System.out.println("Условие 5");
+             if (sinC.compareTo(minusOne) < 0 || sinC.compareTo(one) > 0) {
+                 this.testErr = "Такого треугольника не существует.";
+             } else {
+                 this.angleC = helper.arcSinus(sinC);
+             }
+         } else if(angleB.compareTo(zero) == 0 && angleC.compareTo(zero) != 0 && b.compareTo(zero) != 0 && c.compareTo(zero) != 0) {
+             BigDecimal sinB = helper.sinus(angleC).multiply(b).divide(c, 1, RoundingMode.HALF_UP);
+             System.out.println("Условие 6");
+             if (sinB.compareTo(minusOne) < 0 || sinB.compareTo(one) > 0) {
+                 this.testErr = "Такого треугольника не существует.";
+             } else {
+                 this.angleB = helper.arcSinus(sinB);
+             }
+         } else if (angleC.compareTo(zero) != 0 && angleA.compareTo(zero) != 0 && angleB.compareTo(zero) != 0) {
+             calcWithOneSideSin();
+         }
+        calcArea();
+    }
+
+    public void calcWithOneSideSin() {
+        if(a.compareTo(zero) != 0) {
+            this.b = a.multiply(helper.sinus(angleB).divide(helper.sinus(angleA), 2, RoundingMode.HALF_UP));
+            this.c = a.multiply(helper.sinus(angleC).divide(helper.sinus(angleA), 2, RoundingMode.HALF_UP));
+        } else if (b.compareTo(zero) != 0) {
+            this.a = b.multiply(helper.sinus(angleA).divide(helper.sinus(angleB), 2, RoundingMode.HALF_UP));
+            this.c = b.multiply(helper.sinus(angleC).divide(helper.sinus(angleB), 2, RoundingMode.HALF_UP));
+        } else if(c.compareTo(zero) != 0) {
+            this.a = c.multiply(helper.sinus(angleA).divide(helper.sinus(angleC), 2, RoundingMode.HALF_UP));
+            this.b = c.multiply(helper.sinus(angleB).divide(helper.sinus(angleC), 2, RoundingMode.HALF_UP));
         }
+        System.out.println(this.a + " this. a super");
+        System.out.println(this.b + " this. b super");
+        System.out.println(this.c + " this. c super");
     }
     public void calcAnglesWithSides() {
-        if (a != 0 && b != 0 && c != 0)  {
-            this.angleA = Math.acos((Math.pow(b, 2) + Math.pow(c, 2) - Math.pow(a, 2)) / (2 * b * c));
-            this.angleB = Math.acos((Math.pow(a, 2) + Math.pow(c, 2) - Math.pow(b, 2)) / (2 * a * c));
-            this.angleC = Math.acos((Math.pow(a, 2) + Math.pow(b, 2) - Math.pow(c, 2)) / (2 * a * b));
+        if (a.compareTo(zero) != 0 && b.compareTo(zero) != 0 && c.compareTo(zero) != 0)  {
+            BigDecimal aSquared = a.multiply(a);
+            BigDecimal bSquared = b.multiply(b);
+            BigDecimal cSquared = c.multiply(c);
+            BigDecimal resultA = bSquared.add(cSquared).subtract(aSquared).divide(two.multiply(b).multiply(c),1 , RoundingMode.HALF_UP);
+            BigDecimal resultB = aSquared.add(cSquared).subtract(bSquared).divide(two.multiply(a).multiply(c),1 , RoundingMode.HALF_UP);
+            BigDecimal resultC = aSquared.add(bSquared).subtract(cSquared).divide(two.multiply(a).multiply(b),1 , RoundingMode.HALF_UP);
+            this.angleA = helper.arcCosine(resultA);
+            this.angleB = helper.arcCosine(resultB);
+            this.angleC = helper.arcCosine(resultC);
+            formatCeil();
         } else {
             calcWithAngleCos();
-            calcAngles();
         }
     };
 
     public void formatCeil() {
-        this.a = Math.round(a);
-        this.b = Math.round(b);
-        this.c = Math.round(c);
-        this.angleA = Math.round(Math.toDegrees(this.angleA));
-        this.angleB = Math.round(Math.toDegrees(this.angleB));
-        this.angleC = Math.round(Math.toDegrees(this.angleC));
+        this.angleA = angleA.multiply(angleSum).divide(pi, 0, RoundingMode.HALF_UP);
+        this.angleB = angleB.multiply(angleSum).divide(pi, 0, RoundingMode.HALF_UP);
+        this.angleC = angleC.multiply(angleSum).divide(pi, 0, RoundingMode.HALF_UP);
     }
 
 
     @Override
-    public double calcPer() {
-        return this.per = a + b + c;
+    public BigDecimal calcPer() {
+        return this.per = a.add(b).add(c);
     }
-    public double calcMed() {
-        return this.med = Math.sqrt(2 * a
-                * a + 2 * b
-                * b - c
-                * c) * 0.5;
+    public BigDecimal calcMed() {
+        BigDecimal aSquared = a.multiply(a);
+        BigDecimal bSquared = b.multiply(b);
+        BigDecimal cSquared = c.multiply(c);
+        BigDecimal half = c.multiply(c);
+        BigDecimal result = two.multiply(aSquared).add(two.multiply(bSquared).subtract(cSquared));
+        return this.med = result.sqrt(MathContext.DECIMAL128).multiply(half);
     }
-    public double calcBess() {
-            return this.bess = Math.sqrt(a * b *
-                    (a + b + c) *
-                    (a + b - c)) /
-                    (a + b);
+//    public double calcMed() {
+//        return this.med = Math.sqrt(2 * a * a + 2 * b * b - c * c) * 0.5;
+//    }
+    public BigDecimal calcBess() {
+        BigDecimal abc = a.add(b).add(c);
+        BigDecimal ab_c = a.add(b).subtract(c);
+        BigDecimal ab = a.add(b);
+        BigDecimal result = a.multiply(b).multiply(abc).multiply(ab_c).divide(ab, 2, RoundingMode.HALF_UP);
+        return this.bess = result.sqrt(MathContext.DECIMAL128);
     }
-    public double calcHeight() {
-            return this.height = (2 * this.area) / b;
+    public BigDecimal calcHeight() {
+            return this.height = two.multiply(calcArea()).divide(b,2, RoundingMode.HALF_UP);
     }
     public String getType() {
-        formatCeil();
-        if (a == b && b == c && angleA == angleB && angleB == angleC) {
+        BigDecimal aSquared = a.multiply(a);
+        BigDecimal bSquared = b.multiply(b);
+        BigDecimal cSquared = c.multiply(c);
+        BigDecimal angle90 = new BigDecimal("90");
+
+        if (a.compareTo(b) == 0
+                && b.compareTo(c) == 0
+                && angleA.compareTo(angleB) == 0
+                && angleB.compareTo(angleC) == 0) {
             return this.typeTriangle = "Равносторонний";
-        } else if (Math.pow(a, 2) + Math.pow(b, 2) == Math.pow(c, 2) && angleC == 90
-                || Math.pow(b, 2) + Math.pow(c, 2) == Math.pow(a, 2) && angleA == 90
-                || Math.pow(a, 2) + Math.pow(c, 2) == Math.pow(b, 2) && angleB == 90) {
+        } else if (aSquared.add(bSquared).compareTo(cSquared) == 0 && angleC.compareTo(angle90) == 0
+                || bSquared.add(cSquared).compareTo(aSquared) == 0 && angleA.compareTo(angle90) == 0
+                || aSquared.add(cSquared).compareTo(bSquared) == 0 && angleB.compareTo(angle90) == 0) {
             return this.typeTriangle = "Прямоугольный";
-        } else if (a == b && angleA == angleB
-                || b == c && angleB == angleC
-                || c == a && angleC == angleA) {
+        } else if (a.compareTo(b) == 0 && angleA.compareTo(angleB) == 0
+                || b.compareTo(c) == 0 && angleB.compareTo(angleC) == 0
+                || c.compareTo(a) == 0 && angleC.compareTo(angleA) == 0) {
             return this.typeTriangle = "Равнобедренный";
-        } else if (Math.pow(a, 2) + Math.pow(b, 2) < Math.pow(c, 2)
-                || Math.pow(b, 2) + Math.pow(c, 2) < Math.pow(a, 2)
-                || Math.pow(a, 2) + Math.pow(c, 2) < Math.pow(b, 2)) {
+        } else if (aSquared.add(bSquared).compareTo(cSquared) < 0
+                || bSquared.add(cSquared).compareTo(aSquared) < 0
+                || aSquared.add(cSquared).compareTo(bSquared) < 0) {
             return this.typeTriangle = "Тупоугольный";
-        } else if (Math.pow(a, 2) + Math.pow(b, 2) > Math.pow(c, 2)
-                || Math.pow(b, 2) + Math.pow(c, 2) > Math.pow(a, 2)
-                || Math.pow(a, 2) + Math.pow(c, 2) > Math.pow(b, 2) ) {
+        } else if (aSquared.add(bSquared).compareTo(cSquared) > 0
+                || bSquared.add(cSquared).compareTo(aSquared) > 0
+                || aSquared.add(cSquared).compareTo(bSquared) > 0) {
             return this.typeTriangle = "Остроугольный";
         } else {
             return this.typeTriangle = "Разносторонний";
         }
     }
-
-    public double inCircleArea() {
-       double r = calcArea() / (calcPer() / 2);
-       return this.inCircle = pi * Math.pow(r, 2);
+    public BigDecimal inCircleArea() {
+        BigDecimal halfPer = calcPer().divide(two, 2, RoundingMode.HALF_UP);
+        BigDecimal r = calcArea().divide(halfPer, 2, RoundingMode.HALF_UP);
+        BigDecimal rSquared = r.multiply(r);
+       return this.inCircle = pi.multiply(rSquared);
     };
-    public double outCircleArea() {
-        double p = calcPer() / 2;
-        double s = Math.sqrt(p * (p - a) * (p - b) * (p - c));
-        double r = a * b * c / (4 * s);
-        return this.outCircle = pi * Math.pow(r, 2);
+    public BigDecimal outCircleArea() {
+        BigDecimal p = calcPer().divide(two, 2, RoundingMode.HALF_UP);
+        BigDecimal s = p.multiply(p.subtract(a).multiply(p.subtract(b)).multiply(p.subtract(c))).sqrt(MathContext.DECIMAL128);
+        BigDecimal four = new BigDecimal("4");
+        BigDecimal r = a.multiply(b).multiply(c).divide(four.multiply(s), 2, RoundingMode.HALF_UP);
+        BigDecimal rSquare = r.multiply(r);
+        return this.outCircle = pi.multiply(rSquare);
     };
 }

@@ -2,16 +2,18 @@ package com.example.calcservice.triangle.model;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class TriangleDTO {
-    private double area;
-    private double per;
-    private double med;
-    private double bess;
+    private BigDecimal area;
+    private BigDecimal per;
+    private BigDecimal med;
+    private BigDecimal bess;
     private String typeTriangle;
-    private double height;
-    private double inCircle;
-    private double outCircle;
+    private BigDecimal height;
+    private BigDecimal inCircle;
+    private BigDecimal outCircle;
     private double cos;
     private double sin;
     private double tang;
@@ -20,13 +22,13 @@ public class TriangleDTO {
     private double tangDegrees;
     private String testErr;
 
-    private double a;
-    private double b;
-    private double c;
+    private BigDecimal a;
+    private BigDecimal b;
+    private BigDecimal c;
 
-    private double angleA;
-    private double angleB;
-    private double angleC;
+    private BigDecimal angleA;
+    private BigDecimal angleB;
+    private BigDecimal angleC;
 
     public TriangleDTO() {};
 }
