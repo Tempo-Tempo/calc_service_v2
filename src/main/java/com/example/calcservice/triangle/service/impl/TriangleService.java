@@ -40,14 +40,14 @@ public class TriangleService implements TriangleInterface {
                 .testErr(triangle.getTestErr());
         TriangleDTO result = mapper.getMapper().map(triangle, TriangleDTO.class);
         if(triangle.getTypeTriangle().equals("Прямоугольный")) {
-//            RecTangle recTangle = new RecTangle();
-////            result.setCos(recTangle.calcCosRec(triangle.getAngleA()));
-////            result.setSin(recTangle.calcSinRec(triangle.getAngleA()));
-////            result.setTang(recTangle.calcTanRec(triangle.getAngleA()));
-//            result.setSinDegrees(recTangle.calcSinRecDegrees());
-//            result.setCosDegrees(recTangle.calcCosRecDegrees());
-//            result.setTangDegrees(recTangle.calcTangRecDegrees());
-//            mapper.getMapper().map(recTangle, TriangleDTO.class);
+            RecTangle recTangle = new RecTangle();
+            result.setCos(recTangle.calcCosRec(triangle.getAngleA()));
+            result.setSin(recTangle.calcSinRec(triangle.getAngleA()));
+            result.setTang(recTangle.calcTanRec(triangle.getAngleA()));
+            result.setSinDegrees(recTangle.calcSinRecDegrees());
+            result.setCosDegrees(recTangle.calcCosRecDegrees());
+            result.setTangDegrees(recTangle.calcTangRecDegrees());
+            mapper.getMapper().map(recTangle, TriangleDTO.class);
         }
         return result;
     }

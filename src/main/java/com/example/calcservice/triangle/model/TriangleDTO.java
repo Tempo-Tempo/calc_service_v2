@@ -14,12 +14,12 @@ public class TriangleDTO {
     private BigDecimal height;
     private BigDecimal inCircle;
     private BigDecimal outCircle;
-    private double cos;
-    private double sin;
-    private double tang;
-    private double cosDegrees;
-    private double sinDegrees;
-    private double tangDegrees;
+    private BigDecimal cos;
+    private BigDecimal sin;
+    private BigDecimal tang;
+    private BigDecimal cosDegrees;
+    private BigDecimal sinDegrees;
+    private BigDecimal tangDegrees;
     private String testErr;
 
     private BigDecimal a;

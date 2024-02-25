@@ -12,17 +12,22 @@ public class BigDecimalMath {
         BigDecimal cosine = BigDecimal.valueOf(Math.cos(angle.doubleValue()));
     return cosine.round(new MathContext(5, RoundingMode.HALF_UP));
     }
-    @Bean
+
     public BigDecimal sinus(BigDecimal angle) {
         BigDecimal sinus = BigDecimal.valueOf(Math.sin(angle.doubleValue()));
         return sinus.round(new MathContext(5, RoundingMode.HALF_UP));
     }
-    @Bean
+
+    public BigDecimal tang(BigDecimal angle) {
+        BigDecimal sinus = BigDecimal.valueOf(Math.tan(angle.doubleValue()));
+        return sinus.round(new MathContext(5, RoundingMode.HALF_UP));
+    }
+
     public BigDecimal arcSinus(BigDecimal angle) {
         BigDecimal arcSinus = BigDecimal.valueOf(Math.asin(angle.doubleValue()));
         return arcSinus.round(new MathContext(5, RoundingMode.HALF_UP));
     }
-    @Bean
+
     public BigDecimal arcCosine(BigDecimal angle) {
         BigDecimal arcCosine = BigDecimal.valueOf(Math.acos(angle.doubleValue()));
         return arcCosine.round(new MathContext(5, RoundingMode.HALF_UP));

@@ -46,13 +46,6 @@ public class Triangle extends Figure {
     public BigDecimal calcArea() {
         calcAngles();
         calcAnglesWithSides();
-
-        System.out.println(this.a + " this. a");
-        System.out.println(this.b + " this. b");
-        System.out.println(this.c + " this. c");
-        System.out.println(this.angleA + " angleA ada");
-        System.out.println(this.angleB + " angleB ada");
-        System.out.println(this.angleC + " angleC ada");
         BigDecimal s = (a.add(b).add(c)).divide(two, 2 , RoundingMode.HALF_UP);
         BigDecimal area = s.multiply(s.subtract(a))
                              .multiply(s.subtract(b))
@@ -61,7 +54,6 @@ public class Triangle extends Figure {
     }
     public void calcAngles() {
         BigDecimal angleSumToRadians = angleSum.multiply(pi).divide(angleSum, 8, RoundingMode.HALF_UP);
-        System.out.println("Вычитаем из 180 уголы");
         if(angleB.compareTo(zero) != 0 && angleC.compareTo(zero) != 0 ) {
            this.angleA = angleSumToRadians.subtract(angleB.add(angleC));
         } else if (angleB.compareTo(zero) != 0 && angleA.compareTo(zero) != 0) {
@@ -74,83 +66,69 @@ public class Triangle extends Figure {
     };
 
     public void calcWithAngleCos() {
-        System.out.println("Считаем косинус");
         if (b.compareTo(zero) != 0 && c.compareTo(zero) != 0 && angleA.compareTo(zero) != 0) {
             BigDecimal bSquared = b.multiply(b);
             BigDecimal cSquared = c.multiply(c);
             BigDecimal cosA = helper.cosine(angleA);
             BigDecimal result = bSquared.add(cSquared).subtract(two.multiply(b).multiply(c).multiply(cosA));
-            System.out.println("Косинус если а == 0");
             this.a = result.sqrt(MathContext.DECIMAL128).setScale(0, RoundingMode.HALF_UP);
-            System.out.println(a + " this.aaa");
         } else if (a.compareTo(zero) != 0 && c.compareTo(zero) != 0 && angleB.compareTo(zero) != 0) {
             BigDecimal aSquared = a.multiply(a);
             BigDecimal cSquared = c.multiply(c);
             BigDecimal cosB = helper.cosine(angleB);
             BigDecimal result = aSquared.add(cSquared).subtract(two.multiply(a).multiply(c).multiply(cosB));
             this.b = result.sqrt(MathContext.DECIMAL128).setScale(0, RoundingMode.HALF_UP);
-            System.out.println("Косинус если b == 0");
-            System.out.println(b + " this.bbb");
         } else if (a.compareTo(zero) != 0 && b.compareTo(zero) != 0 && angleC.compareTo(zero) != 0 ) {
             BigDecimal aSquared = a.multiply(a);
             BigDecimal bSquared = b.multiply(b);
             BigDecimal cosC = helper.cosine(angleC);
-            BigDecimal result = aSquared.add(bSquared).subtract(two.multiply(a).multiply(c).multiply(cosC));
+            BigDecimal result = aSquared.add(bSquared).subtract(two.multiply(a).multiply(b).multiply(cosC));
             this.c = result.sqrt(MathContext.DECIMAL128).setScale(0, RoundingMode.HALF_UP);
-            System.out.println(c + " this.ccc");
         } else {
             calcWithAngleSin();
         }
     }
     public void calcWithAngleSin() {
-        System.out.println("Считаем синус");
         BigDecimal minusOne = new BigDecimal("-1.0");
         BigDecimal one = new BigDecimal("1.0");
          if(angleB.compareTo(zero) == 0 && angleA.compareTo(zero) != 0 && a.compareTo(zero) != 0 && b.compareTo(zero) != 0) {
-            BigDecimal sinB = helper.sinus(angleA).multiply(b).divide(a, 1, RoundingMode.HALF_UP);
-             System.out.println(sinB + " Условие 1 sinB");
+            BigDecimal sinB = helper.sinus(angleA).multiply(b).divide(a, 2, RoundingMode.HALF_UP);
             if (sinB.compareTo(minusOne) < 0 || sinB.compareTo(one) > 0) {
                 this.testErr = "Такого треугольника не существует.";
             } else {
                 this.angleB = helper.arcSinus(sinB);
             }
          } else if(angleA.compareTo(zero) == 0 && angleB.compareTo(zero) != 0 && a.compareTo(zero) != 0 && b.compareTo(zero) != 0) {
-             BigDecimal sinA = helper.sinus(angleB).multiply(a).divide(b, 1, RoundingMode.HALF_UP);
-             System.out.println("Условие 2");
+             BigDecimal sinA = helper.sinus(angleB).multiply(a).divide(b, 2, RoundingMode.HALF_UP);
              if (sinA.compareTo(minusOne) < 0 || sinA.compareTo(one) > 0) {
                  this.testErr = "Такого треугольника не существует.";
              } else {
                  this.angleA = helper.arcSinus(sinA);
              }
          } else if(angleC.compareTo(zero) == 0 && angleA.compareTo(zero) != 0 && c.compareTo(zero) != 0 && a.compareTo(zero) != 0) {
-             BigDecimal sinC = helper.sinus(angleA).multiply(c).divide(a, 0, RoundingMode.HALF_UP);
-             System.out.println(sinC  + " Условие 3 sinC");
+             BigDecimal sinC = helper.sinus(angleA).multiply(c).divide(a, 2, RoundingMode.HALF_UP);
              if (sinC.compareTo(minusOne) < 0 || sinC.compareTo(one) > 0) {
                  this.testErr = "Такого треугольника не существует.";
                  return;
              } else {
                  this.angleC = helper.arcSinus(sinC);
-                 System.out.println(this.angleC  + " Условие 3 angleC");
              }
          } else if(angleA.compareTo(zero) == 0 && angleC.compareTo(zero) != 0 && a.compareTo(zero) != 0 && c.compareTo(zero) != 0) {
-             BigDecimal sinA = helper.sinus(angleC).multiply(a).divide(c, 1, RoundingMode.HALF_UP);
-             System.out.println("Условие 4");
+             BigDecimal sinA = helper.sinus(angleC).multiply(a).divide(c, 2, RoundingMode.HALF_UP);
              if (sinA.compareTo(minusOne) < 0 || sinA.compareTo(one) > 0) {
                  this.testErr = "Такого треугольника не существует.";
              } else {
                  this.angleA = helper.arcSinus(sinA);
              }
          } else if(angleC.compareTo(zero) == 0 && angleB.compareTo(zero) != 0 && c.compareTo(zero) != 0 && b.compareTo(zero) != 0) {
-             BigDecimal sinC = helper.sinus(angleB).multiply(c).divide(b, 1, RoundingMode.HALF_UP);
-             System.out.println("Условие 5");
+             BigDecimal sinC = helper.sinus(angleB).multiply(c).divide(b, 2, RoundingMode.HALF_UP);
              if (sinC.compareTo(minusOne) < 0 || sinC.compareTo(one) > 0) {
                  this.testErr = "Такого треугольника не существует.";
              } else {
                  this.angleC = helper.arcSinus(sinC);
              }
          } else if(angleB.compareTo(zero) == 0 && angleC.compareTo(zero) != 0 && b.compareTo(zero) != 0 && c.compareTo(zero) != 0) {
-             BigDecimal sinB = helper.sinus(angleC).multiply(b).divide(c, 1, RoundingMode.HALF_UP);
-             System.out.println("Условие 6");
+             BigDecimal sinB = helper.sinus(angleC).multiply(b).divide(c, 2, RoundingMode.HALF_UP);
              if (sinB.compareTo(minusOne) < 0 || sinB.compareTo(one) > 0) {
                  this.testErr = "Такого треугольника не существует.";
              } else {
@@ -173,18 +151,15 @@ public class Triangle extends Figure {
             this.a = c.multiply(helper.sinus(angleA).divide(helper.sinus(angleC), 2, RoundingMode.HALF_UP));
             this.b = c.multiply(helper.sinus(angleB).divide(helper.sinus(angleC), 2, RoundingMode.HALF_UP));
         }
-        System.out.println(this.a + " this. a super");
-        System.out.println(this.b + " this. b super");
-        System.out.println(this.c + " this. c super");
     }
     public void calcAnglesWithSides() {
         if (a.compareTo(zero) != 0 && b.compareTo(zero) != 0 && c.compareTo(zero) != 0)  {
             BigDecimal aSquared = a.multiply(a);
             BigDecimal bSquared = b.multiply(b);
             BigDecimal cSquared = c.multiply(c);
-            BigDecimal resultA = bSquared.add(cSquared).subtract(aSquared).divide(two.multiply(b).multiply(c),1 , RoundingMode.HALF_UP);
-            BigDecimal resultB = aSquared.add(cSquared).subtract(bSquared).divide(two.multiply(a).multiply(c),1 , RoundingMode.HALF_UP);
-            BigDecimal resultC = aSquared.add(bSquared).subtract(cSquared).divide(two.multiply(a).multiply(b),1 , RoundingMode.HALF_UP);
+            BigDecimal resultA = bSquared.add(cSquared).subtract(aSquared).divide(two.multiply(b).multiply(c),5 , RoundingMode.HALF_UP);
+            BigDecimal resultB = aSquared.add(cSquared).subtract(bSquared).divide(two.multiply(a).multiply(c),5 , RoundingMode.HALF_UP);
+            BigDecimal resultC = aSquared.add(bSquared).subtract(cSquared).divide(two.multiply(a).multiply(b),5 , RoundingMode.HALF_UP);
             this.angleA = helper.arcCosine(resultA);
             this.angleB = helper.arcCosine(resultB);
             this.angleC = helper.arcCosine(resultC);
@@ -193,13 +168,11 @@ public class Triangle extends Figure {
             calcWithAngleCos();
         }
     };
-
     public void formatCeil() {
         this.angleA = angleA.multiply(angleSum).divide(pi, 0, RoundingMode.HALF_UP);
         this.angleB = angleB.multiply(angleSum).divide(pi, 0, RoundingMode.HALF_UP);
         this.angleC = angleC.multiply(angleSum).divide(pi, 0, RoundingMode.HALF_UP);
     }
-
 
     @Override
     public BigDecimal calcPer() {
@@ -209,20 +182,20 @@ public class Triangle extends Figure {
         BigDecimal aSquared = a.multiply(a);
         BigDecimal bSquared = b.multiply(b);
         BigDecimal cSquared = c.multiply(c);
-        BigDecimal half = c.multiply(c);
+        BigDecimal half = new BigDecimal("0.5");
         BigDecimal result = two.multiply(aSquared).add(two.multiply(bSquared).subtract(cSquared));
         return this.med = result.sqrt(MathContext.DECIMAL128).multiply(half);
     }
-//    public double calcMed() {
-//        return this.med = Math.sqrt(2 * a * a + 2 * b * b - c * c) * 0.5;
-//    }
     public BigDecimal calcBess() {
         BigDecimal abc = a.add(b).add(c);
         BigDecimal ab_c = a.add(b).subtract(c);
         BigDecimal ab = a.add(b);
-        BigDecimal result = a.multiply(b).multiply(abc).multiply(ab_c).divide(ab, 2, RoundingMode.HALF_UP);
-        return this.bess = result.sqrt(MathContext.DECIMAL128);
+        BigDecimal result = a.multiply(b).multiply(abc).multiply(ab_c);
+        return this.bess = result.sqrt(MathContext.DECIMAL128).divide(ab, 2, RoundingMode.HALF_UP);
     }
+//    public double calcBess() {
+//        return this.bess = Math.sqrt(a * b * (a + b + c) * (a + b - c)) / (a + b);
+//    }
     public BigDecimal calcHeight() {
             return this.height = two.multiply(calcArea()).divide(b,2, RoundingMode.HALF_UP);
     }

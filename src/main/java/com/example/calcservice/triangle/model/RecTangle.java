@@ -2,37 +2,34 @@ package com.example.calcservice.triangle.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 
 @Data
 @AllArgsConstructor
 public class RecTangle extends Triangle {
 
-    private double cos;
-    private double sin;
-    private double tang;
-    private double cosDegrees;
-    private double sinDegrees;
-    private double tangDegrees;
+    private BigDecimal cos;
+    private BigDecimal sin;
+    private BigDecimal tang;
+    private BigDecimal cosDegrees;
+    private BigDecimal sinDegrees;
+    private BigDecimal tangDegrees;
 
     public  RecTangle() {};
-    public double calcSinRec(double angleA) {
-        return  this.sin = Math.sin(Math.toRadians(angleA));
+    public BigDecimal calcSinRec(BigDecimal angleA) { return this.sin = helper.sinus(angleA); }
+    public BigDecimal calcSinRecDegrees() {
+        return this.sinDegrees = this.sin.multiply(angleSum).divide(pi, 2, RoundingMode.HALF_UP);
     }
-    public double calcSinRecDegrees() {
-        return this.sinDegrees = Math.toDegrees(this.sin);
+    public BigDecimal calcCosRec(BigDecimal angleA) { return this.cos = helper.cosine(angleA); }
+    public BigDecimal calcCosRecDegrees() {
+        return this.cosDegrees = this.cos.multiply(angleSum).divide(pi, 2, RoundingMode.HALF_UP);
     }
-    public double calcCosRec(double angleA) {
-        return  this.cos = Math.cos(Math.toRadians(angleA));
+    public BigDecimal calcTanRec(BigDecimal angleA) {
+        return this.tang = helper.cosine(angleA);
     }
-    public double calcCosRecDegrees() {
-        return  this.cosDegrees = Math.toDegrees(this.cos);
+    public BigDecimal calcTangRecDegrees() {
+        return this.tangDegrees =  this.tang.multiply(angleSum).divide(pi, 2, RoundingMode.HALF_UP);
     }
-    public double calcTanRec(double angleA) {
-        return this.tang = Math.tan(Math.toRadians(angleA));
-    }
-    public double calcTangRecDegrees() {
-        return this.tangDegrees = Math.toDegrees(this.tang);
-    }
-
-
 }
