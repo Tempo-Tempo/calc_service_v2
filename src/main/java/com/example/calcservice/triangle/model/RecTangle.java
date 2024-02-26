@@ -1,5 +1,6 @@
 package com.example.calcservice.triangle.model;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -8,6 +9,7 @@ import java.math.RoundingMode;
 
 @Data
 @AllArgsConstructor
+@Builder(builderMethodName = "recTangleBuilder")
 public class RecTangle extends Triangle {
 
     private BigDecimal cos;
@@ -18,7 +20,9 @@ public class RecTangle extends Triangle {
     private BigDecimal tangDegrees;
 
     public  RecTangle() {};
-    public BigDecimal calcSinRec(BigDecimal angleA) { return this.sin = helper.sinus(angleA); }
+    public BigDecimal calcSinRec(BigDecimal angleA) {
+        System.out.println(angleA + " sinRec");
+        return this.sin = helper.sinus(angleA); }
     public BigDecimal calcSinRecDegrees() {
         return this.sinDegrees = this.sin.multiply(angleSum).divide(pi, 2, RoundingMode.HALF_UP);
     }
@@ -31,5 +35,8 @@ public class RecTangle extends Triangle {
     }
     public BigDecimal calcTangRecDegrees() {
         return this.tangDegrees =  this.tang.multiply(angleSum).divide(pi, 2, RoundingMode.HALF_UP);
+    }
+    public void calcHypotenuseСathetus() {
+
     }
 }

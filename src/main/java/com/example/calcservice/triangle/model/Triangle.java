@@ -193,9 +193,6 @@ public class Triangle extends Figure {
         BigDecimal result = a.multiply(b).multiply(abc).multiply(ab_c);
         return this.bess = result.sqrt(MathContext.DECIMAL128).divide(ab, 2, RoundingMode.HALF_UP);
     }
-//    public double calcBess() {
-//        return this.bess = Math.sqrt(a * b * (a + b + c) * (a + b - c)) / (a + b);
-//    }
     public BigDecimal calcHeight() {
             return this.height = two.multiply(calcArea()).divide(b,2, RoundingMode.HALF_UP);
     }
@@ -204,7 +201,6 @@ public class Triangle extends Figure {
         BigDecimal bSquared = b.multiply(b);
         BigDecimal cSquared = c.multiply(c);
         BigDecimal angle90 = new BigDecimal("90");
-
         if (a.compareTo(b) == 0
                 && b.compareTo(c) == 0
                 && angleA.compareTo(angleB) == 0

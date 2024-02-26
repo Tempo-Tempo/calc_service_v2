@@ -47,7 +47,6 @@ public class TriangleService implements TriangleInterface {
             result.setSinDegrees(recTangle.calcSinRecDegrees());
             result.setCosDegrees(recTangle.calcCosRecDegrees());
             result.setTangDegrees(recTangle.calcTangRecDegrees());
-            mapper.getMapper().map(recTangle, TriangleDTO.class);
         }
         return result;
     }
